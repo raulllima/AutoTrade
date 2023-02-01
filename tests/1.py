@@ -1,10 +1,12 @@
-from trade import tradeRequest
+from trade import Trade
 
-teste = tradeRequest({
-    "account": {
-        "login": 3001486154,
-        "password": "R@ul1605",
-        "server": "Rico-DEMO"
-    }
+Trade.init({
+    "login": 3001486154,
+    "password": "R@ul1605",
+    "server": "Rico-DEMO"
 })
-print(teste)
+
+Trade.request({
+    "symbol": "MXRF11",
+    "qtd": 1,
+})
