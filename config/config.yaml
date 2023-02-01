@@ -1,0 +1,34 @@
+version: "1.0"
+account:
+  login: 12345678
+  password: "password"
+  server: Rico-RTD 
+trade:
+  mode: manual # manual, auto
+  actions:
+    fii:
+      list:
+        - MXRF11
+        - XPCM11
+        - STRX11
+      strategy:
+        name: buy-hold # buy-hold, buy-sell
+        toBuy:
+          percentage: -15.0
+        toSell:
+          percentage: 15.0
+    acao:
+      list:
+        - PETR4
+        - TSLA
+      strategy:
+        name: buy-sell # buy-hold, buy-sell
+        toBuy: 
+          percentage: -15.0
+        toSell:
+          percentage: 15.0
+    bdr:
+      list:
+        - NUBR3
+      strategy:
+        name: buy-hold # buy-hold, buy-sell
