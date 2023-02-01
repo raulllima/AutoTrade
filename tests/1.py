@@ -9,6 +9,7 @@ try:
     Trade.request({
         "symbol": "MXRF11",
         "qtd": 1,
+        "type": "buy",
     })
 except (AttributeError):
     print('Ops!! Parece que algo deu errado.')

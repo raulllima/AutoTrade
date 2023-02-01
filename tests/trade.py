@@ -28,12 +28,18 @@ class Trade:
                 quit()
 
         point = mt5.symbol_info(info['symbol']).point
+        if info['type'] == 'buy':
+            order_type = mt5.ORDER_TYPE_BUY
+        elif info['type'] == 'sell':
+            order_type = mt5.ORDER_TYPE_SELL
+        else:
+            return ({"Erro": "Tipo de ordem inválido."})
 
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": info['symbol'],
             "volume": float(info['qtd']),
-            "type": mt5.ORDER_TYPE_BUY,
+            "type": order_type,
             "price": mt5.symbol_info_tick(info['symbol']).ask,
             "sl": mt5.symbol_info_tick(info['symbol']).ask-100*point,
             "tp": mt5.symbol_info_tick(info['symbol']).ask+100*point,
