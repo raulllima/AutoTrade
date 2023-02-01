@@ -5,8 +5,10 @@ Trade.init({
     "password": "R@ul1605",
     "server": "Rico-DEMO"
 })
-
-Trade.request({
-    "symbol": "MXRF11",
-    "qtd": 1,
-})
+try:
+    Trade.request({
+        "symbol": "MXRF11",
+        "qtd": 1,
+    })
+except (AttributeError):
+    print('Ops!! Parece que algo deu errado.')
