@@ -1,6 +1,6 @@
 import yaml
 
-with open("./config.yaml") as file:
+with open("../config/config.yaml") as file:
     yamlConfig = yaml.safe_load(file)
 
     cotacoes = {

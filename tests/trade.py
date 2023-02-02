@@ -27,13 +27,14 @@ class Trade:
                 mt5.shutdown()
                 quit()
 
-        point = mt5.symbol_info(info['symbol']).point
         if info['type'] == 'buy':
             order_type = mt5.ORDER_TYPE_BUY
         elif info['type'] == 'sell':
             order_type = mt5.ORDER_TYPE_SELL
         else:
             return ({"Erro": "Tipo de ordem inválido."})
+
+        point = mt5.symbol_info(info['symbol']).point
 
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
@@ -59,9 +60,10 @@ class Trade:
 
         if result['comment'] == 'Request executed':
             print({"Ordem enviada": {
+                "type": info['type'],
                 "symbol": info['symbol'],
                 "qtd": float(info['qtd']),
-                "preço": mt5.symbol_info_tick(info['symbol']).ask}
+                "price": mt5.symbol_info_tick(info['symbol']).ask}
             })
         elif result['comment'] == 'AutoTrading disabled by client ':
             print('Ordem não enviada, AutoTrading desabilitado.')

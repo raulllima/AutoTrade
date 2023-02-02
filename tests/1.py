@@ -1,15 +1,29 @@
 from trade import Trade
+from finance import Finance
+import time
 
 Trade.init({
     "login": 3001486154,
     "password": "R@ul1605",
     "server": "Rico-DEMO"
 })
-try:
-    Trade.request({
-        "symbol": "MXRF11",
-        "qtd": 1,
-        "type": "buy",
-    })
-except (AttributeError):
-    print('Ops!! Parece que algo deu errado.')
+
+symbols = ['BBAS3.SA', 'PETR4.SA', 'NUBR33.SA']
+
+while True:
+    try:
+        time.sleep(0.8)
+        teste = Finance.checkSymbol({
+            "symbol": symbols,
+        })
+        print(teste)
+    except (AttributeError, TypeError):
+        continue
+# try:
+#     Trade.request({
+#         "type": "buy",
+#         "symbol": "MXRF11",
+#         "qtd": 1,
+#     })
+# except (AttributeError):
+#     print('Ops!! Parece que algo deu errado.')
