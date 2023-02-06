@@ -23,7 +23,7 @@ with open("../config/config.yaml") as file:
                             "symbol": yamlConfig['trade']['actions'][actionType]['list'],
                         })
                         diferenca = list(response)[counter][actionName]['diferenca']
-
+                        
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
                             print('Compra')
                             Trade.request({

@@ -39,12 +39,12 @@ class Trade:
         print(float(info['qtd']))
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
-            "symbol": 'BBASE395',
-            "volume": 10.0,
+            "symbol": symbol,
+            "volume": float(info['qtd']),
             "type": order_type,
-            "price": mt5.symbol_info_tick('BBASE395').ask,
-            "sl": mt5.symbol_info_tick('BBASE395').ask-100*point,
-            "tp": mt5.symbol_info_tick('BBASE395').ask+100*point,
+            "price": mt5.symbol_info_tick(symbol).ask,
+            "sl": mt5.symbol_info_tick(symbol).ask-100*point,
+            "tp": mt5.symbol_info_tick(symbol).ask+100*point,
             "deviation": 10,
             "magic": 234000,
             "comment": "python script",
@@ -64,7 +64,7 @@ class Trade:
                 "type": info['type'],
                 "symbol": symbol,
                 "qtd": float(info['qtd']),
-                "price": mt5.symbol_info_tick(symbol).ask}
+                "price": mt5.symbol_info_tick(symbol).ask * float(info['qtd'])}
             })
         elif result['comment'] == 'AutoTrading disabled by client ':
             print('Ordem não enviada, AutoTrading desabilitado.')

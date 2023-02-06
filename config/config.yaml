@@ -20,8 +20,7 @@ trade:
           percentage: 15.0
     acao:
       list:
-      - 'PETR4.SA'
-        
+      - 'PETR4F.SA'
       strategy:
         name: buy-sell # buy-hold, buy-sell
         toBuy: 
