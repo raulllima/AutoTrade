@@ -12,7 +12,9 @@ class Trade:
     def request(info):
         print(f"Account balance: R$ {mt5.account_info().balance}")
         print(f"Account currency: {mt5.account_info().currency}\n")
+        
         print(info['action'])
+
         symbol = info['symbol'].split('.SA')[0]
         symbol_info = mt5.symbol_info(symbol)
 
