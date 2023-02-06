@@ -30,6 +30,7 @@ with open("../config/config.yaml") as file:
                                 "type": "buy",
                                 "symbol": actionName,
                                 "qtd": 1.0,
+                                "action": actionType
                             })
                             print(
                                 f"Compra {actionName}: {diferenca} - {yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']}")
