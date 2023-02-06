@@ -5,6 +5,12 @@ import time
 
 counter = 0
 
+Trade.init({
+    "login": 3001486154,
+    "password": "R@ul1605",
+    "server": "Rico-DEMO"
+})
+
 with open("../config/config.yaml") as file:
     yamlConfig = yaml.safe_load(file)
     if yamlConfig['trade']['mode'] == "manual":
@@ -16,14 +22,14 @@ with open("../config/config.yaml") as file:
                         response = Finance.checkSymbol({
                             "symbol": yamlConfig['trade']['actions'][actionType]['list'],
                         })
-                        diferenca = list(response)[
-                            counter][actionName]['diferenca']
+                        diferenca = list(response)[counter][actionName]['diferenca']
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
+                            print('Compra')
                             Trade.request({
                                 "type": "buy",
                                 "symbol": actionName,
-                                "qtd": 1,
+                                "qtd": 1.0,
                             })
                             print(
                                 f"Compra {actionName}: {diferenca} - {yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']}")
@@ -32,7 +38,7 @@ with open("../config/config.yaml") as file:
                             Trade.request({
                                 "type": "sell",
                                 "symbol": actionName,
-                                "qtd": 1,
+                                "qtd": 1.0,
                             })
                             print(
                                 f"Venda {actionName}: {diferenca} - {yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']}")

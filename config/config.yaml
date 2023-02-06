@@ -20,15 +20,14 @@ trade:
           percentage: 15.0
     acao:
       list:
-      - 'BBAS3.SA' 
       - 'PETR4.SA'
         
       strategy:
         name: buy-sell # buy-hold, buy-sell
         toBuy: 
-          percentage: -15.0
+          percentage: 10.0
         toSell:
-          percentage: 15.0
+          percentage: 10.0
     bdr:
       list:
         - NUBR33.SA
