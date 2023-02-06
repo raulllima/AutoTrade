@@ -29,7 +29,7 @@ with open("../config/config.yaml") as file:
                             Trade.request({
                                 "type": "buy",
                                 "symbol": actionName,
-                                "qtd": 1.0,
+                                "qtd": 102.0,
                                 "action": actionType
                             })
 

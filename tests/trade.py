@@ -15,9 +15,8 @@ class Trade:
 
         symbol = info['symbol'].split('.SA')[0]
         symbol_info = mt5.symbol_info(symbol)
-        
-
-        if info['action'] != "fii" and info['qtd'] < 100.0:
+            
+        if info['action'] != "fii" and info['qtd'] != 100.0:
             symbol = f"{symbol}F"
 
         if symbol_info is None:
@@ -40,11 +39,11 @@ class Trade:
             return ({"Erro": "Tipo de ordem inválido."})
 
         point = mt5.symbol_info(symbol).point
-        print(float(info['qtd']))
+        print(symbol)
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
-            "volume": float(info['qtd']),
+            "volume": info['qtd'],
             "type": order_type,
             "price": mt5.symbol_info_tick(symbol).ask,
             "sl": mt5.symbol_info_tick(symbol).ask-100*point,
@@ -67,7 +66,7 @@ class Trade:
             print({"Ordem enviada": {
                 "type": info['type'],
                 "symbol": symbol,
-                "qtd": float(info['qtd']),
+                "qtd": info['qtd'],
                 "price": mt5.symbol_info_tick(symbol).ask * info['qtd']}
             })
         elif result['comment'] == 'AutoTrading disabled by client ':
