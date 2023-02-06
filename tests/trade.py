@@ -12,11 +12,13 @@ class Trade:
     def request(info):
         print(f"Account balance: R$ {mt5.account_info().balance}")
         print(f"Account currency: {mt5.account_info().currency}\n")
-        
-        print(info['action'])
 
         symbol = info['symbol'].split('.SA')[0]
         symbol_info = mt5.symbol_info(symbol)
+        
+
+        if info['action'] != "fii" and info['qtd'] < 100.0:
+            symbol = f"{symbol}F"
 
         if symbol_info is None:
             print(info['symbol'], "not found, can not call order_check()")
@@ -66,7 +68,7 @@ class Trade:
                 "type": info['type'],
                 "symbol": symbol,
                 "qtd": float(info['qtd']),
-                "price": mt5.symbol_info_tick(symbol).ask * float(info['qtd'])}
+                "price": mt5.symbol_info_tick(symbol).ask * info['qtd']}
             })
         elif result['comment'] == 'AutoTrading disabled by client ':
             print('Ordem não enviada, AutoTrading desabilitado.')

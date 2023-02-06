@@ -22,18 +22,16 @@ with open("../config/config.yaml") as file:
                         response = Finance.checkSymbol({
                             "symbol": yamlConfig['trade']['actions'][actionType]['list'],
                         })
-                        diferenca = list(response)[counter][actionName]['diferenca']
-                        
+                        diferenca = list(response)[
+                            counter][actionName]['diferenca']
+
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
-                            print('Compra')
                             Trade.request({
                                 "type": "buy",
                                 "symbol": actionName,
                                 "qtd": 1.0,
                                 "action": actionType
                             })
-                            print(
-                                f"Compra {actionName}: {diferenca} - {yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']}")
 
                         if diferenca >= yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']:
                             Trade.request({
@@ -41,8 +39,6 @@ with open("../config/config.yaml") as file:
                                 "symbol": actionName,
                                 "qtd": 1.0,
                             })
-                            print(
-                                f"Venda {actionName}: {diferenca} - {yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']}")
 
                         counter += 1
                     except (AttributeError, TypeError):
