@@ -7,15 +7,19 @@ class Trade:
                 login=info['login'],
                 password=info['password'],
                 server=info['server']):
-            return ({"Erro": "initialize() failed, error code = " + str(mt5.last_error())})
+            return ({
+                "Erro": "initialize() failed, error code = " + str(mt5.last_error())
+            })
+        else:
+            return ({
+                "currency": mt5.account_info().currency,
+                "balance": mt5.account_info().balance,
+            })
 
     def request(info):
-        print(f"Account balance: R$ {mt5.account_info().balance}")
-        print(f"Account currency: {mt5.account_info().currency}\n")
-
         symbol = info['symbol'].split('.SA')[0]
         symbol_info = mt5.symbol_info(symbol)
-            
+
         if info['action'] != "fii" and info['qtd'] != 100.0:
             symbol = f"{symbol}F"
 
@@ -39,7 +43,6 @@ class Trade:
             return ({"Erro": "Tipo de ordem inválido."})
 
         point = mt5.symbol_info(symbol).point
-        print(symbol)
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
@@ -55,7 +58,7 @@ class Trade:
             "type_filling": mt5.ORDER_FILLING_RETURN,
         }
 
-        if not float(info['qtd'])*mt5.symbol_info_tick(symbol).ask <= mt5.account_info().balance:
+        if not info['qtd'] * mt5.symbol_info_tick(symbol).ask <= mt5.account_info().balance:
             print('Ops!! Saldo insuficiente.')
             quit()
 

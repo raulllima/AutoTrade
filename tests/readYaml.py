@@ -2,17 +2,24 @@ from trade import Trade
 from finance import Finance
 import yaml
 import time
+import math
 
 counter = 0
 
-Trade.init({
+account = Trade.init({
     "login": 3001486154,
     "password": "R@ul1605",
     "server": "Rico-DEMO"
 })
 
+
 with open("../config/config.yaml") as file:
     yamlConfig = yaml.safe_load(file)
+
+    tradeLimit = (
+        account['balance'] *
+        (yamlConfig['trade']['balance-limit'] / 100))
+    print(tradeLimit)
     if yamlConfig['trade']['mode'] == "manual":
         for actionType in yamlConfig['trade']['actions']:
             if yamlConfig['trade']['actions'][actionType]['strategy']['name'] == "buy-sell":
@@ -22,14 +29,25 @@ with open("../config/config.yaml") as file:
                         response = Finance.checkSymbol({
                             "symbol": yamlConfig['trade']['actions'][actionType]['list'],
                         })
+
+                        lastValue = list(response)[
+                            counter][actionName]['lastData']
+
                         diferenca = list(response)[
                             counter][actionName]['diferenca']
+
+                        if lastValue <= tradeLimit:
+                            qtdLimit = math.floor(tradeLimit / lastValue)
+                            if qtdLimit <= 99:
+                                qtd = qtdLimit
+                            else:
+                                qtd = 99
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
                             Trade.request({
                                 "type": "buy",
                                 "symbol": actionName,
-                                "qtd": 102.0,
+                                "qtd": 100.0,
                                 "action": actionType
                             })
 
@@ -38,6 +56,7 @@ with open("../config/config.yaml") as file:
                                 "type": "sell",
                                 "symbol": actionName,
                                 "qtd": 1.0,
+                                "action": actionType
                             })
 
                         counter += 1

@@ -3,8 +3,8 @@ account:
   login: 12345678
   password: "password"
   server: Rico-RTD
-  balance-limit: 10 #1-100%
 trade:
+  balance-limit: 10 #1-100%
   mode: manual # manual, auto
   actions:
     fii:
