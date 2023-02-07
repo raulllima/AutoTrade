@@ -37,19 +37,24 @@ with open("../config/config.yaml") as file:
                             counter][actionName]['diferenca']
 
                         if lastValue <= tradeLimit:
-                            qtdLimit = math.floor(tradeLimit / lastValue)
-                            if qtdLimit <= 99:
-                                qtd = qtdLimit
-                            else:
-                                qtd = 99
+                            totalQtdLimit = math.floor(tradeLimit / lastValue)
+                            qtdLimit = []
+                            while totalQtdLimit >= 99:
+                                qtdLimit.append(99)
+                                totalQtdLimit -= 99
+
+                            qtdLimit.append(totalQtdLimit)
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
-                            Trade.request({
-                                "type": "buy",
-                                "symbol": actionName,
-                                "qtd": 100.0,
-                                "action": actionType
-                            })
+
+                            for i in qtdLimit:
+                                print(i)
+                                # Trade.request({
+                                #     "type": "buy",
+                                #     "symbol": actionName,
+                                #     "qtd": i,
+                                #     "action": actionType
+                                # })
 
                         if diferenca >= yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']:
                             Trade.request({
