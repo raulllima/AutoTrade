@@ -46,15 +46,13 @@ with open("../config/config.yaml") as file:
                             qtdLimit.append(totalQtdLimit)
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
-
-                            for i in qtdLimit:
-                                print(i)
-                                # Trade.request({
-                                #     "type": "buy",
-                                #     "symbol": actionName,
-                                #     "qtd": i,
-                                #     "action": actionType
-                                # })
+                            for qtd in qtdLimit:
+                                Trade.request({
+                                    "type": "buy",
+                                    "symbol": actionName,
+                                    "qtd": qtd,
+                                    "action": actionType
+                                })
 
                         if diferenca >= yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']:
                             Trade.request({
