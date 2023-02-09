@@ -3,6 +3,7 @@ from finance import Finance
 import yaml
 import time
 import math
+import asyncio
 
 counter = 0
 
@@ -12,6 +13,19 @@ account = Trade.init({
     "server": "Rico-DEMO"
 })
 
+
+async def taskTrade(qtd):
+    Trade.request({
+        "type": "sell",
+        "symbol": actionName,
+        "qtd": float(qtd),
+        "action": actionType
+    })
+
+async def mainTask():
+    task = [taskTrade(qtdLimit[i])
+            for i in range(0, len(qtdLimit))]
+    await asyncio.gather(*task)
 
 with open("../config/config.yaml") as file:
     yamlConfig = yaml.safe_load(file)
@@ -46,14 +60,9 @@ with open("../config/config.yaml") as file:
                             qtdLimit.append(totalQtdLimit)
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
-                            # for qtd in qtdLimit:
-                            Trade.request({
-                                "type": "buy",
-                                "symbol": actionName,
-                                "qtd": float(qtdLimit[0]),
-                                "action": actionType
-                            })
-                            
+
+                            asyncio.run(mainTask())
+
                         if diferenca >= yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']:
                             Trade.request({
                                 "type": "sell",
