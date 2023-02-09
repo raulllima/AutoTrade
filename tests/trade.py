@@ -18,7 +18,7 @@ class Trade:
 
     def request(info):
         symbol = info['symbol'].split('.SA')[0]
-        symbol_info = mt5.symbol_info(symbol)
+        symbol_info = mt5.symbol_info('MXRF11')
 
         if info['action'] != "fii" and info['qtd'] != 100.0:
             symbol = f"{symbol}F"

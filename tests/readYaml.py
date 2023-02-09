@@ -19,7 +19,7 @@ with open("../config/config.yaml") as file:
     tradeLimit = (
         account['balance'] *
         (yamlConfig['trade']['balance-limit'] / 100))
-    print(tradeLimit)
+
     if yamlConfig['trade']['mode'] == "manual":
         for actionType in yamlConfig['trade']['actions']:
             if yamlConfig['trade']['actions'][actionType]['strategy']['name'] == "buy-sell":
@@ -46,14 +46,14 @@ with open("../config/config.yaml") as file:
                             qtdLimit.append(totalQtdLimit)
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
-                            for qtd in qtdLimit:
-                                Trade.request({
-                                    "type": "buy",
-                                    "symbol": actionName,
-                                    "qtd": qtd,
-                                    "action": actionType
-                                })
-
+                            # for qtd in qtdLimit:
+                            Trade.request({
+                                "type": "buy",
+                                "symbol": actionName,
+                                "qtd": float(qtdLimit[0]),
+                                "action": actionType
+                            })
+                            
                         if diferenca >= yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']:
                             Trade.request({
                                 "type": "sell",

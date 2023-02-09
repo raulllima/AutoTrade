@@ -10,20 +10,21 @@ Trade.init({
 
 symbols = ['BBAS3.SA', 'PETR4.SA', 'NUBR33.SA']
 
-while True:
-    try:
-        time.sleep(0.8)
-        teste = Finance.checkSymbol({
-            "symbol": symbols,
-        })
-        print(teste)
-    except (AttributeError, TypeError):
-        continue
+# while True:
 # try:
-#     Trade.request({
-#         "type": "buy",
-#         "symbol": "MXRF11",
-#         "qtd": 1,
+#     time.sleep(0.8)
+#     teste = Finance.checkSymbol({
+#         "symbol": symbols,
 #     })
-# except (AttributeError):
-#     print('Ops!! Parece que algo deu errado.')
+#     print(teste)
+# except (AttributeError, TypeError):
+#     continue
+try:
+    Trade.request({
+        "type": "buy",
+        "symbol": "PETR4",
+        "qtd": 1.0,
+        "action": 'acao'
+    })
+except (AttributeError):
+    print('Ops!! Parece que algo deu errado.')
