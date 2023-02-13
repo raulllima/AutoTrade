@@ -12,7 +12,6 @@ account = Trade.init({
     "server": "Rico-DEMO"
 })
 
-
 with open("../config/config.yaml") as file:
     yamlConfig = yaml.safe_load(file)
 
@@ -46,6 +45,7 @@ with open("../config/config.yaml") as file:
                             qtdLimit.append(totalQtdLimit)
 
                         if diferenca <= yamlConfig['trade']['actions'][actionType]['strategy']['toBuy']['percentage']:
+                            print('Comprar')
                             for qtd in qtdLimit:
                                 Trade.request({
                                     "type": "buy",
@@ -55,12 +55,18 @@ with open("../config/config.yaml") as file:
                                 })
 
                         if diferenca >= yamlConfig['trade']['actions'][actionType]['strategy']['toSell']['percentage']:
-                            Trade.request({
-                                "type": "sell",
-                                "symbol": actionName,
-                                "qtd": 1.0,
-                                "action": actionType
-                            })
+                            try:
+                                wallet = Trade.account(actionName)
+                                for qtd in qtdLimit:
+                                    if qtd >= wallet['qtd']:
+                                        Trade.request({
+                                            "type": "sell",
+                                            "symbol": actionName,
+                                            "qtd": float(qtd),
+                                            "action": actionType
+                                        })
+                            except (AttributeError, TypeError, KeyError):
+                                print('Quantidade insuficiente para vender.')
 
                         counter += 1
                     except (AttributeError, TypeError):

@@ -1,4 +1,5 @@
 import MetaTrader5 as mt5
+import json
 
 
 class Trade:
@@ -15,6 +16,40 @@ class Trade:
                 "currency": mt5.account_info().currency,
                 "balance": mt5.account_info().balance,
             })
+
+    def account(symbol):
+        wallet = []
+        symbol = symbol.split('.SA')[0]
+        position = mt5.positions_get(symbol=symbol)
+        
+        if position is None:
+            return ({"Erro": f"'{symbol}' não encontrada."})
+        else:
+            positionJSON = json.loads(json.dumps(position, indent=4))
+            if positionJSON:
+                positionStatus = positionJSON[0][5]
+
+                wallet.append({
+                    "symbol": positionJSON[0][16],
+                    "qtd": positionJSON[0][9] if positionStatus == 0 else -positionJSON[0][9]
+                })
+                return wallet[0]
+            else:
+                return ({"Erro": f"'{symbol}' não encontrada."})
+
+    def teste():
+        wallet = []
+        position = mt5.positions_get()
+        if len(position) == 0:
+            return ({"Erro": "Nenhuma posição encontrada."})
+
+        positionJSON = json.loads(json.dumps(position, indent=4))
+        for ticket in positionJSON:
+            wallet.append({
+                "symbol": ticket[16],
+                "qtd": ticket[9],
+            })
+        return wallet
 
     def request(info):
         symbol = info['symbol'].split('.SA')[0]
