@@ -1,6 +1,7 @@
 from trade import Trade
 from finance import Finance
 import time
+import asyncio
 
 Trade.init({
     "login": 3001486154,
@@ -19,12 +20,37 @@ symbols = ['BBAS3.SA', 'PETR4.SA', 'NUBR33.SA']
 #     print(teste)
 # except (AttributeError, TypeError):
 #     continue
-try:
+qtdLimit = [99, 99, 99, 92]
+
+
+async def taskTrade(qtd):
+    print('Iniciando compra de ' + str(qtd) + ' ações.')
+    await asyncio.sleep(5)
     Trade.request({
         "type": "buy",
-        "symbol": "PETR4",
-        "qtd": 1.0,
+        "symbol": 'PETR4',
+        "qtd": float(qtd),
         "action": 'acao'
     })
-except (AttributeError):
-    print('Ops!! Parece que algo deu errado.')
+
+
+async def mainTask():
+    task = [taskTrade(qtdLimit[i])
+            for i in range(0, len(qtdLimit))]
+    await asyncio.gather(*task)
+
+
+async def minha_tarefa_assincrona():
+
+    Trade.request({
+        "type": "sell",
+        "symbol": 'PETR4',
+        "qtd": 99.0,
+        "action": 'acao'
+    })
+
+try:
+    asyncio.run(minha_tarefa_assincrona())
+
+except (AttributeError, TypeError, SystemExit):
+    pass

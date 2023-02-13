@@ -18,18 +18,19 @@ class Trade:
 
     def request(info):
         symbol = info['symbol'].split('.SA')[0]
-        symbol_info = mt5.symbol_info('MXRF11')
+        symbol_info = mt5.symbol_info(symbol)
+        point = mt5.symbol_info(symbol).point
 
         if info['action'] != "fii" and info['qtd'] != 100.0:
             symbol = f"{symbol}F"
 
         if symbol_info is None:
-            print(info['symbol'], "not found, can not call order_check()")
+            print(symbol, "not found, can not call order_check()")
             mt5.shutdown()
             quit()
 
         if not symbol_info.visible:
-            print(info['symbol'], "is not visible, trying to switch on")
+            print(symbol, "is not visible, trying to switch on")
             if not mt5.symbol_select(symbol, True):
                 print("symbol_select({}}) failed, exit", symbol)
                 mt5.shutdown()
@@ -37,20 +38,23 @@ class Trade:
 
         if info['type'] == 'buy':
             order_type = mt5.ORDER_TYPE_BUY
+            order_sl = mt5.symbol_info_tick(symbol).ask-100*point
+            order_tp = mt5.symbol_info_tick(symbol).ask+100*point
         elif info['type'] == 'sell':
             order_type = mt5.ORDER_TYPE_SELL
+            order_sl = mt5.symbol_info_tick(symbol).ask+100*point
+            order_tp = mt5.symbol_info_tick(symbol).ask-100*point
         else:
             return ({"Erro": "Tipo de ordem inválido."})
 
-        point = mt5.symbol_info(symbol).point
         request = {
             "action": mt5.TRADE_ACTION_DEAL,
             "symbol": symbol,
             "volume": info['qtd'],
             "type": order_type,
             "price": mt5.symbol_info_tick(symbol).ask,
-            "sl": mt5.symbol_info_tick(symbol).ask-100*point,
-            "tp": mt5.symbol_info_tick(symbol).ask+100*point,
+            "sl": order_sl,
+            "tp": order_tp,
             "deviation": 10,
             "magic": 234000,
             "comment": "python script",
@@ -78,5 +82,3 @@ class Trade:
             print('Ordem não enviada, mercado fechado.')
         else:
             print(f"Ordem não enviada, {result['comment']}")
-
-        mt5.shutdown()
